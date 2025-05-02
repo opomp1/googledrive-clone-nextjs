@@ -26,12 +26,14 @@ export const QUEIES = {
     }
     return parents;
   },
+
   getFolders: function getFolders(folderId: number) {
     return db
       .select()
       .from(foldersSchema)
       .where(eq(foldersSchema.parent, folderId));
   },
+
   getFiles: function (folderId: number) {
     return db
       .select()
