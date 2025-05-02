@@ -1,5 +1,5 @@
 import { createClient, type Client } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/singlestore";
 import { createPool, type Pool } from "mysql2";
 
 import { env } from "~/env";
@@ -28,8 +28,8 @@ const conn =
 if (env.NODE_ENV !== "production") {
   globalForDb.conn = conn;
 }
-export const client =
-  globalForDb.client ?? createClient({ url: env.DATABASE_URL });
-if (env.NODE_ENV !== "production") globalForDb.client = client;
+// export const client =
+//   globalForDb.client ?? createClient({ url: env.DATABASE_URL });
+// if (env.NODE_ENV !== "production") globalForDb.client = client;
 
-export const db = drizzle(client, { schema });
+export const db = drizzle(conn, { schema });
