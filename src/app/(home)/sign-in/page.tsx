@@ -1,7 +1,14 @@
 import { SignInButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { CloudIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+
+  if (session.userId) {
+    return redirect("/drive");
+  }
   return (
     <>
       <div className="mb-8 flex items-center justify-center space-x-2">
@@ -9,9 +16,9 @@ export default function HomePage() {
         <h1 className="text-4xl font-bold text-white">T3 Drive</h1>
       </div>
 
-      <div className="w-full max-w-md space-y-4 rounded-lg border-2 bg-neutral-900/60 p-14 text-white shadow-xl backdrop-blur-sm">
+      <div className="w-full max-w-md space-y-4 rounded-lg border bg-neutral-900/60 p-10 text-white shadow-xl backdrop-blur-sm">
         <div className="space-y-1">
-          <div className="text-center text-2xl font-bold">Welcome Back</div>
+          <div className="text-center text-2xl font-bold">Welcome</div>
           <div className="text-center text-neutral-400">
             Your secure cloud storage solution
           </div>
