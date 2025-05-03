@@ -1,4 +1,4 @@
-import DriveContents from "../../drive-contents";
+import DriveContents from "./drive-contents";
 
 import { QUEIES } from "~/server/db/queries";
 
