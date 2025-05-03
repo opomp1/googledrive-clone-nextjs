@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { z } from "zod";
-import { MUTATIONS, QUEIES } from "~/server/db/queries";
+import { MUTATIONS, QUERIES } from "~/server/db/queries";
 
 const f = createUploadthing();
 
@@ -33,7 +33,7 @@ export const ourFileRouter = {
       if (!user.userId) throw new UploadThingError("Unauthorized");
 
       //   Get parent folde id
-      const folder = await QUEIES.getFolderById(input.folderId);
+      const folder = await QUERIES.getFolderById(input.folderId);
       if (!folder) throw new UploadThingError("Folder not found");
 
       //   Check folder owner

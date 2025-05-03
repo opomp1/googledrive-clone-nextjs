@@ -8,7 +8,7 @@ import {
 
 import { and, eq, isNull } from "drizzle-orm";
 
-export const QUEIES = {
+export const QUERIES = {
   getAllParentsForFolder: async function (folderId: number) {
     const parents = [];
     let currentId: number | null = folderId;
@@ -79,5 +79,40 @@ export const MUTATIONS = {
     return await db
       .insert(filesSchema)
       .values({ ...input.file, ownerId: input.userId });
+  },
+
+  onboardUser: async function (userId: string) {
+    // create root folder
+    const rootFolder = await db
+      .insert(foldersSchema)
+      .values({
+        name: "Root",
+        parent: null,
+        ownerId: userId,
+      })
+      .$returningId();
+
+    //   return root folder id to create other folder below
+    const rootFolderId = rootFolder[0]!.id;
+
+    await db.insert(foldersSchema).values([
+      {
+        name: "Trash",
+        parent: rootFolderId,
+        ownerId: userId,
+      },
+      {
+        name: "Shared",
+        parent: rootFolderId,
+        ownerId: userId,
+      },
+      {
+        name: "Documents",
+        parent: rootFolderId,
+        ownerId: userId,
+      },
+    ]);
+
+    return rootFolderId;
   },
 };
