@@ -4,13 +4,9 @@ import { db } from "~/server/db";
 import {
   files_table as filesSchema,
   folders_table as foldersSchema,
-  type DB_FileType,
 } from "~/server/db/schema";
 
 import { eq } from "drizzle-orm";
-import { File } from "~/lib/mock-data";
-import { auth } from "@clerk/nextjs/server";
-import { unauthorized } from "next/navigation";
 
 export const QUEIES = {
   getAllParentsForFolder: async function (folderId: number) {
@@ -44,14 +40,16 @@ export const QUEIES = {
     return db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.parent, folderId));
+      .where(eq(foldersSchema.parent, folderId))
+      .orderBy(foldersSchema.id);
   },
 
   getFiles: function (folderId: number) {
     return db
       .select()
       .from(filesSchema)
-      .where(eq(filesSchema.parent, folderId));
+      .where(eq(filesSchema.parent, folderId))
+      .orderBy(filesSchema.id);
   },
 };
 
